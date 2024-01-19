@@ -9,7 +9,9 @@ func _ready():
 func _process(delta):
 	pass
 
-
-
 func _on_pressed():
 	$"../AnimationPlayer".play("Pickaxe Pressed")
+	if $"../HammerButton".button_pressed:
+		$"../HammerButton".button_pressed = false
+	if !button_pressed && !$"../HammerButton".button_pressed:
+		$"../HammerButton".button_pressed = true

@@ -1,2 +1,2 @@
-# grand mine
+# Grand Mine
  
