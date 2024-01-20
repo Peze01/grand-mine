@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://1c6vesc5rdyt"]
+
+[ext_resource type="Texture2D" uid="uid://cgok7mgaba2b1" path="res://assets/textures/dialog_box.png" id="1_p1o5m"]
+[ext_resource type="Script" path="res://scripts/Dialog Box.gd" id="2_mh0me"]
+[ext_resource type="FontFile" uid="uid://cmf6m226d0fdf" path="res://assets/fonts/pokemon-dp-pro.ttf" id="3_br7xs"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+process_mode = 2
+script = ExtResource("2_mh0me")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dialog Box" type="TextureRect" parent="PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+texture = ExtResource("1_p1o5m")
+
+[node name="Dialog Text" type="RichTextLabel" parent="PanelContainer/Dialog Box"]
+offset_left = 7.0
+offset_top = 2.0
+offset_right = 232.0
+offset_bottom = 42.0
+theme_override_fonts/normal_font = ExtResource("3_br7xs")
+bbcode_enabled = true
+scroll_active = false
+
+[node name="Timer" type="Timer" parent="PanelContainer/Dialog Box"]

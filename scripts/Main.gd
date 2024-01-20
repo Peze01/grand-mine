@@ -4,6 +4,7 @@ extends TileMap
 var save_path = "user://save.dat"
 
 const BagScreen = preload("res://scenes/bag.tscn")
+const DialogBox = preload("res://scenes/dialog_box.tscn")
 
 var all_treasure := []
 var no_of_treasure := 0
@@ -88,7 +89,6 @@ func init_treasure():
 	#3x6
 	all_treasure.append(Treasure.new("Rare Bone", Vector2i(3,6), Vector2i(0,40)))
 
-
 func create_save():
 	if !FileAccess.file_exists(save_path):
 		for treasure in all_treasure:
@@ -97,8 +97,6 @@ func create_save():
 		file.store_string(JSON.stringify(inventory))
 		file.close()
 		
-		
-	
 func save():
 	if FileAccess.file_exists(save_path):
 		var file = FileAccess.open(save_path, FileAccess.WRITE)
@@ -112,8 +110,6 @@ func load_save():
 	else:
 		create_save()
 		
-		
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	init_treasure()
@@ -169,10 +165,17 @@ func destroy_rocks(center_pos):
 			else:
 				continue
 	check_treasure_found()
-	
+
+func do_dialogue(message):
+	var dialog_box = DialogBox.instantiate()
+	add_child(dialog_box)
+	dialog_box.start_dialogue(message)
 func check_wall_health():
 	if wall_health<1:
+		do_dialogue("Game Over. You found " + str(amount_found)+ " pieces of treasure!")
 		print("Game Over. You found ",amount_found," pieces of treasure!")
+		#for t in treasure_found_names:
+			#do_dialogue(t + " was added to your Bag!")
 		print(treasure_found_names)
 		reset_game()
 
@@ -190,10 +193,12 @@ func check_treasure_found():
 				treasure_found_names.append(dict["Name"])
 				inventory[dict["Name"]]+=1
 				amount_found+=1
+				do_dialogue("You found a(n) " + str(dict["Name"]) +"!")
 			else:
 				all_treasure_found = false
 			treasure_found = true
 	if all_treasure_found:
+		do_dialogue("All treasure was found!")
 		print("All treasure was found!")
 		print(treasure_found_names)
 		reset_game()

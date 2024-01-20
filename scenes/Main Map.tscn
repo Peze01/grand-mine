@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://ck27bxj723v0b"]
+[gd_scene load_steps=26 format=3 uid="uid://ck27bxj723v0b"]
 
 [ext_resource type="Texture2D" uid="uid://cal1dbvqsrnxu" path="res://assets/textures/tileset.png" id="1_hjg8r"]
 [ext_resource type="Script" path="res://scripts/Main.gd" id="2_uc57u"]
@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://j6a1eefiaiw" path="res://assets/textures/hammer_press_overlay3.png" id="14_vdtrn"]
 [ext_resource type="Texture2D" uid="uid://d23s3r1myosd0" path="res://assets/textures/pickaxe_press_overlay2.png" id="15_r6taw"]
 [ext_resource type="Texture2D" uid="uid://cr2b6g8cobg2o" path="res://assets/textures/pickaxe_press_overlay3.png" id="16_7d6qy"]
+[ext_resource type="AudioStream" uid="uid://cxetikc02rot1" path="res://assets/sound/BGM.wav" id="19_3gfx6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x0ykc"]
 texture = ExtResource("1_hjg8r")
@@ -863,6 +864,12 @@ texture = ExtResource("11_fanjv")
 libraries = {
 "": SubResource("AnimationLibrary_bjn56")
 }
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("19_3gfx6")
+volume_db = -31.952
+autoplay = true
 
 [connection signal="pressed" from="Bag Button" to="." method="_on_bag_button_pressed"]
 [connection signal="pressed" from="HammerButton" to="HammerButton" method="_on_pressed"]
