@@ -793,7 +793,6 @@ layer_0/tile_data = PackedInt32Array(131072, 2031616, 4, 196608, 2031616, 4, 262
 layer_1/name = "Treasure"
 layer_1/tile_data = PackedInt32Array()
 layer_2/name = "Soft Rock"
-layer_2/modulate = Color(1, 1, 1, 0)
 layer_2/tile_data = PackedInt32Array()
 layer_3/name = "Medium Rock"
 layer_3/tile_data = PackedInt32Array()

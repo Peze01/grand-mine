@@ -178,7 +178,20 @@ func generate_treasure():
 		spawn_successful = false
 		
 func generate_rocks():
+	var perlin_noise = FastNoiseLite.new()
+	perlin_noise.seed = randi()
+	var noise = 0
 	for x in range(0,13):
 		for y in range(2,12):
 			set_cell(2,Vector2i(x,y),0,Vector2i(32,5))
+			noise = perlin_noise.get_noise_2d(x*10,y*10)
+			print(noise)
+			if noise < 0:
+				set_cell(3,Vector2i(x,y),0,Vector2i(33,5))
+			else:
+				set_cell(3,Vector2i(x,y),0,Vector2i(33,5))
+				set_cell(4,Vector2i(x,y),0,Vector2i(34,5))
+			
+			
+			
 		
