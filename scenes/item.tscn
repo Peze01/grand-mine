@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://x4rhdr7p2kok"]
+
+[ext_resource type="FontFile" uid="uid://cmf6m226d0fdf" path="res://assets/fonts/pokemon-dp-pro.ttf" id="1_dty15"]
+
+[node name="Item" type="HBoxContainer"]
+size_flags_stretch_ratio = 0.0
+
+[node name="Item Name" type="Label" parent="."]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_dty15")
+theme_override_font_sizes/font_size = 16
+text = "Red Shard
+"
+
+[node name="Item Amount" type="Label" parent="."]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_dty15")
+theme_override_font_sizes/font_size = 16
+text = "x1"
+horizontal_alignment = 2

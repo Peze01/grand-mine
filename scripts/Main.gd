@@ -1,29 +1,22 @@
 extends TileMap
 
 
-#enum Treasure {
-	#RED_SHARD, BLUE_SHARD, GREEN_SHARD, YELLOW_SHARD,
-	#HELIX_FOSSIL, DOME_FOSSIL, OLD_AMBER, ROOT_FOSSIL,
-	#CLAW_FOSSIL, ARMOR_FOSSIL, SKULL_FOSSIL, RARE_BONE,
-	#STAR_PIECE, REVIVE, MAX_REVIVE, IRON_BALL,
-	#HEART_SCALE, LIGHT_CLAY, ODD_KEYSTONE, HARD_STONE,
-	#FIRE_STONE, WATER_STONE, THUNDERSTONE, LEAF_STONE,
-	#MOON_STONE, SUN_STONE, OVAL_STONE, EVERSTONE,
-	#SMOOTH_ROCK, HEAT_ROCK, ICY_ROCK, DAMP_ROCK,
-	#DRACO_PLATE, DREAD_PLATE, EARTH_PLATE, FIST_PLATE,
-	#FLAME_PLATE, ICICLE_PLATE, INSECT_PLATE, IRON_PLATE,
-	#MEADOW_PLATE, MIND_PLATE, SKY_PLATE, SPLASH_PLATE,
-	#SPOOKY_PLATE, STONE_PLATE, TOXIC_PLATE, ZAP_PLATE,
-	#RED_SPHERE, BLUE_SPHERE, GREEN_SPHERE, PRISM_SPHERE,
-	#PALE_SPHERE, LARGE_RED_SPHERE, LARGE_BLUE_SPHERE, LARGE_GREEN_SPHERE,
-	#LARGE_PRISM_SPHERE,LARGE_PALE_SPHERE
-#}
+var save_path = "user://save.dat"
 
+const BagScreen = preload("res://scenes/bag.tscn")
 
 var all_treasure := []
 var no_of_treasure := 0
 var occupied_spaces := []
+var tool_data := {}
+var game_board := []
+var tile_healths := {}
+var wall_health := 100
+var amount_found := 0
+var treasure_found_names := []
+var inventory := {}
 
+signal inventory_opened(inventory)
 
 func init_treasure():
 	#2x2
@@ -89,69 +82,234 @@ func init_treasure():
 	all_treasure.append(Treasure.new("Heat Rock", Vector2i(4,3), Vector2i(0,29)))
 	#3x4
 	all_treasure.append(Treasure.new("Leaf Stone", Vector2i(3,4), Vector2i(0,20)))
-	#2x4
-	all_treasure.append(Treasure.new("Moon Stone", Vector2i(2,4), Vector2i(12,22)))
-	all_treasure.append(Treasure.new("Everstone", Vector2i(2,4), Vector2i(2,37)))
+	#4x2
+	all_treasure.append(Treasure.new("Moon Stone", Vector2i(4,2), Vector2i(12,22)))
+	all_treasure.append(Treasure.new("Everstone", Vector2i(4,2), Vector2i(2,37)))
 	#3x6
 	all_treasure.append(Treasure.new("Rare Bone", Vector2i(3,6), Vector2i(0,40)))
-	
-	
-	
 
-#func get_treasure_type(name):
-	#for x in treasure_data:
-		#if name in x[1]:
-			#return x[0]
-	#print("get_treasure_type: not found")
-	#return -1
+
+func create_save():
+	if !FileAccess.file_exists(save_path):
+		for treasure in all_treasure:
+			inventory[treasure.get_name()] = 0
+		var file = FileAccess.open(save_path, FileAccess.WRITE)
+		file.store_string(JSON.stringify(inventory))
+		file.close()
+		
+		
 	
+func save():
+	if FileAccess.file_exists(save_path):
+		var file = FileAccess.open(save_path, FileAccess.WRITE)
+		file.store_string(JSON.stringify(inventory))
+		file.close()
+
+func load_save():
+	if FileAccess.file_exists(save_path):
+		var file = FileAccess.open(save_path, FileAccess.READ)
+		inventory = JSON.parse_string(file.get_as_text())
+	else:
+		create_save()
+		
+		
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	init_treasure()
+	load_save()
+	init_tools()
 	setup_game()
+
+func _input(event):
+	if Input.is_action_just_pressed("interact"):
+		var interact_pos = local_to_map(get_global_mouse_position())
+		if interact_pos.x in range(0,13) && interact_pos.y in range(2,12):
+			destroy_rocks(interact_pos)
+
+func init_tools():
+	tool_data = {
+		"Pickaxe" = {
+			"Center" = 2,
+			"Adjacent" = 1,
+			"Corners" = 0,
+			"Wall" = 2
+		},
+		"Hammer" = {
+			"Center" = 2,
+			"Adjacent" = 2,
+			"Corners" = 1,
+			"Wall" = 4
+		}
+	}
+		
+func destroy_rocks(center_pos):
+	var current_tool = {}
+	if $HammerButton.button_pressed:
+		current_tool = tool_data["Hammer"]
+	else:
+		current_tool = tool_data["Pickaxe"]
+	var start_pos = Vector2i(center_pos.x-1,center_pos.y-1)
+	var current_pos = start_pos
+	wall_health-=current_tool["Wall"]
+	print(wall_health)
+	check_wall_health()
+	for x in range(3):
+		current_pos.x = start_pos.x + x
+		for y in range(3):
+			current_pos.y = start_pos.y + y
+			if tile_healths.has(current_pos):
+				if is_corner(center_pos, current_pos):
+					tile_healths[current_pos]-=current_tool["Corners"]
+				elif is_adjacent(center_pos, current_pos):
+					tile_healths[current_pos]-=current_tool["Adjacent"]
+				else:
+					tile_healths[current_pos]-=current_tool["Center"]
+				update_tiles()
+			else:
+				continue
+	check_treasure_found()
+	
+func check_wall_health():
+	if wall_health<1:
+		print("Game Over. You found ",amount_found," pieces of treasure!")
+		print(treasure_found_names)
+		reset_game()
+
+func check_treasure_found():
+	var treasure_found = true
+	var all_treasure_found = true
+	for dict in occupied_spaces:
+		if !dict["Found"]:
+			for space in dict["Spaces"]:
+				if get_cell_tile_data(2,space) != null:
+					treasure_found = false
+			if treasure_found:
+				print(dict["Name"], " was found!")
+				dict["Found"] = true
+				treasure_found_names.append(dict["Name"])
+				inventory[dict["Name"]]+=1
+				amount_found+=1
+			else:
+				all_treasure_found = false
+			treasure_found = true
+	if all_treasure_found:
+		print("All treasure was found!")
+		print(treasure_found_names)
+		reset_game()
+	
+	
+func update_tiles():
+	for tile in tile_healths.keys():
+		if tile_healths[tile] < 1:
+			erase_cell(2,tile)
+		elif tile_healths[tile] == 1:
+			set_cell(2,tile,0,Vector2i(32,4),0)
+		elif tile_healths[tile] == 2:
+			set_cell(2,tile,0,Vector2i(32,5),0)
+		elif tile_healths[tile] == 3:
+			set_cell(2,tile,0,Vector2i(33,4),0)
+		elif tile_healths[tile] == 4:
+			set_cell(2,tile,0,Vector2i(33,5),0)
+		elif tile_healths[tile] == 5:
+			set_cell(2,tile,0,Vector2i(34,4),0)
+		elif tile_healths[tile] == 6:
+			set_cell(2,tile,0,Vector2i(34,5),0)
+
+		
+
+func setup_game():
+	wall_health = 100
+	amount_found = 0
+	treasure_found_names = []
+	generate_treasure()
+	generate_rocks()
+
+func reset_game():
+	occupied_spaces.clear()
+	for x in range(0,13):
+		for y in range(2,12):
+			erase_cell(1,Vector2i(x,y))
+			erase_cell(2,Vector2i(x,y))
+			erase_cell(3,Vector2i(x,y))
+			erase_cell(4,Vector2i(x,y))
+	save()
+	setup_game()
+			
+	
+func generate_treasure():
+	no_of_treasure = weighted_randi([[3,0.6],[4,0.3],[5,0.1]])
 	print(no_of_treasure)
+	var spawn_position = Vector2i(0,2)
+	var treasure = all_treasure[0]
+	var spawn_successful = false
+	var attempted_spawns = 0
+	for i in range(no_of_treasure):
+		treasure = all_treasure[randi_range(0,all_treasure.size()-1)]
+		while !spawn_successful:
+			spawn_position = Vector2i(randi_range(0,13-treasure.get_size().x),randi_range(2,12-treasure.get_size().y))
+			while place_treasure(treasure.get_name(),spawn_position) !=true:
+				spawn_position = Vector2i(randi_range(0,13-treasure.get_size().x),randi_range(2,12-treasure.get_size().y))
+				attempted_spawns+=1
+				if attempted_spawns > 10:
+					break
+			if attempted_spawns > 10:
+					i-=1
+					break
+			spawn_successful = true
+			
+		spawn_successful = false
+		
+func generate_rocks():
+	var perlin_noise = FastNoiseLite.new()
+	perlin_noise.seed = randi()
+	var noise = 0
+	for x in range(0,13):
+		for y in range(2,12):
+			noise = perlin_noise.get_noise_2d(x*10,y*10)
+			if noise < -0.3:
+				set_cell(2,Vector2i(x,y),0,Vector2i(32,5))
+				tile_healths[Vector2i(x,y)] = 2
+			elif noise < 0.1:
+				set_cell(2,Vector2i(x,y),0,Vector2i(33,5))
+				tile_healths[Vector2i(x,y)] = 4
+			else:
+				set_cell(2,Vector2i(x,y),0,Vector2i(34,5))
+				tile_healths[Vector2i(x,y)] = 6
+			
+			
+				
 
 
-
-func place_treasure(name, position):
-	var treasure = find_treasure_by_name(name)
+func place_treasure(treasure_name, treasure_position):
+	var treasure = find_treasure_by_name(treasure_name)
 	var start = treasure.get_atlas_coords()
 	var current_atlas_coords = start
-	var current_position = position
+	var current_position = treasure_position
 	var positions_to_place = []
 	for y in range(treasure.get_size().y):
 		for x in range(treasure.get_size().x):
 			current_atlas_coords.x = start.x + x
 			if get_tileset().get_source(0).has_tile(Vector2i(start.x+x, start.y+y)):
-				if current_position in occupied_spaces:
-					return false
+				for dict in occupied_spaces:	
+					if current_position in dict["Spaces"]:
+						return false
 				positions_to_place.append([current_position,current_atlas_coords])
 			current_position.x+=1
-		current_position.x = position.x
+		current_position.x = treasure_position.x
 		current_position.y+=1
 		current_atlas_coords.x = start.x
 		current_atlas_coords.y+=1
+	var treasure_spaces = {
+		"Name" = treasure_name,
+		"Spaces" = [],
+		"Found" = false
+	}
 	for pos in positions_to_place:
-		occupied_spaces.append(pos[0])
+		treasure_spaces["Spaces"].append(pos[0])
 		set_cell(1,pos[0],0,pos[1],0)
+	occupied_spaces.append(treasure_spaces)
 	return true
-
-func find_treasure_by_name(name):
-	var i = 0
-	for x in all_treasure:
-		if x.get_name() == name:
-			return x
-		i+=1
-	print("find_treasure_by_name: not found")
-	return null
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-func setup_game():
-	generate_treasure()
-	generate_rocks()
 
 func weighted_randi(rand_info):
 	var rng = randf()
@@ -163,35 +321,41 @@ func weighted_randi(rand_info):
 	print("weighted_randi: weight info is invalid")
 	return-1
 
-func generate_treasure():
-	no_of_treasure = weighted_randi([[2,0.2],[3,0.5],[4,0.2],[5,0.1]])
-	var spawn_position = Vector2i(0,2)
-	var treasure = all_treasure[0]
-	var spawn_successful = false
-	for i in range(no_of_treasure):
-		treasure = all_treasure[randi_range(0,all_treasure.size()-1)]
-		while !spawn_successful:
-			spawn_position = Vector2i(randi_range(0,13-treasure.get_size().x),randi_range(2,12-treasure.get_size().y))
-			while place_treasure(treasure.get_name(),spawn_position) !=true:
-				spawn_position = Vector2i(randi_range(0,13-treasure.get_size().x),randi_range(2,12-treasure.get_size().y))
-			spawn_successful = true
-		spawn_successful = false
+func find_treasure_by_name(treasure_name):
+	for x in all_treasure:
+		if x.get_name() == treasure_name:
+			return x
+	print("find_treasure_by_name: not found")
+	return null
+
+func is_corner(center_pos, check_pos):
+	if abs(center_pos.x-check_pos.x)==1 && abs(center_pos.y-check_pos.y)==1:
+		return true
+	#elif center_pos.x+1==check_pos.x && center_pos.y-1==check_pos.y:
+		#return true
+	#elif center_pos.x-1==check_pos.x && center_pos.y+1==check_pos.y:
+		#return true
+	#elif center_pos.x+1==check_pos.x && center_pos.y+1==check_pos.y:
+		#return true
+	return false
+
+func is_adjacent(pos, check_pos):
+	if abs(pos.x-check_pos.x)==1 && pos.y==check_pos.y:
+		return true
+	elif abs(pos.y-check_pos.y)==1 && pos.x==check_pos.x:
+		return true
+	return false
 		
-func generate_rocks():
-	var perlin_noise = FastNoiseLite.new()
-	perlin_noise.seed = randi()
-	var noise = 0
-	for x in range(0,13):
-		for y in range(2,12):
-			set_cell(2,Vector2i(x,y),0,Vector2i(32,5))
-			noise = perlin_noise.get_noise_2d(x*10,y*10)
-			print(noise)
-			if noise < 0:
-				set_cell(3,Vector2i(x,y),0,Vector2i(33,5))
-			else:
-				set_cell(3,Vector2i(x,y),0,Vector2i(33,5))
-				set_cell(4,Vector2i(x,y),0,Vector2i(34,5))
-			
-			
-			
-		
+func _on_bag_button_pressed():
+	var bag_menu = BagScreen.instantiate()
+	var item_container = bag_menu.get_node("Item Scroll/Item List/Item")
+	for item in inventory.keys():
+		var new_item_container = item_container.duplicate()
+		new_item_container.get_node("Item Name").text = str(item)
+		new_item_container.get_node("Item Amount").text = "x"+ str(inventory[item])
+		new_item_container.visible = true
+		bag_menu.get_node("Item Scroll/Item List").add_child(new_item_container)
+	add_child(bag_menu)
+	
+	
+	

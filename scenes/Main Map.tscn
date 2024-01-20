@@ -1,24 +1,26 @@
-[gd_scene load_steps=23 format=3 uid="uid://ck27bxj723v0b"]
+[gd_scene load_steps=25 format=3 uid="uid://ck27bxj723v0b"]
 
-[ext_resource type="Texture2D" uid="uid://cal1dbvqsrnxu" path="res://assets/textures/tileset.png" id="1_h3a7f"]
-[ext_resource type="Texture2D" uid="uid://dabqoalumjwcd" path="res://assets/textures/main overlay.png" id="2_cvb06"]
-[ext_resource type="Script" path="res://scripts/Main.gd" id="2_jvu2h"]
-[ext_resource type="ButtonGroup" uid="uid://codnjqjaengkv" path="res://resources/tool_button_group.tres" id="3_brq5q"]
-[ext_resource type="Texture2D" uid="uid://dqoxsjstdwjvw" path="res://assets/textures/hammer_off.png" id="3_i2qt8"]
-[ext_resource type="Texture2D" uid="uid://d0cfi4i0ptboe" path="res://assets/textures/hammer_on.png" id="4_j5f8f"]
-[ext_resource type="Script" path="res://scripts/HammerButton.gd" id="5_340ob"]
-[ext_resource type="Texture2D" uid="uid://cs6o5tfspugdb" path="res://assets/textures/pickaxe_off.png" id="5_vkcd1"]
-[ext_resource type="Texture2D" uid="uid://dcjbxeio3bddf" path="res://assets/textures/pickaxe_on.png" id="6_5mwfm"]
-[ext_resource type="Script" path="res://scripts/PickaxeButton.gd" id="8_kotpt"]
-[ext_resource type="Texture2D" uid="uid://c340rdv7i7pr6" path="res://assets/textures/pickaxe_press_overlay1.png" id="10_k38rd"]
-[ext_resource type="Texture2D" uid="uid://d23s3r1myosd0" path="res://assets/textures/pickaxe_press_overlay2.png" id="11_rujla"]
-[ext_resource type="Texture2D" uid="uid://cr2b6g8cobg2o" path="res://assets/textures/pickaxe_press_overlay3.png" id="12_k47w1"]
-[ext_resource type="Texture2D" uid="uid://brym3uxrprnh2" path="res://assets/textures/hammer_press_overlay1.png" id="12_r1ft5"]
-[ext_resource type="Texture2D" uid="uid://dgamfqquw3rqc" path="res://assets/textures/hammer_press_overlay2.png" id="13_d2gft"]
-[ext_resource type="Texture2D" uid="uid://j6a1eefiaiw" path="res://assets/textures/hammer_press_overlay3.png" id="15_aflqj"]
+[ext_resource type="Texture2D" uid="uid://cal1dbvqsrnxu" path="res://assets/textures/tileset.png" id="1_hjg8r"]
+[ext_resource type="Script" path="res://scripts/Main.gd" id="2_uc57u"]
+[ext_resource type="Texture2D" uid="uid://dabqoalumjwcd" path="res://assets/textures/main overlay.png" id="3_dhsli"]
+[ext_resource type="Texture2D" uid="uid://vfa3lidccv00" path="res://assets/textures/bag_icon.png" id="4_bwagy"]
+[ext_resource type="ButtonGroup" uid="uid://codnjqjaengkv" path="res://resources/tool_button_group.tres" id="4_m26vl"]
+[ext_resource type="Texture2D" uid="uid://ccxv6vtbai43" path="res://assets/textures/bag_icon_pressed.png" id="5_2ijpg"]
+[ext_resource type="Texture2D" uid="uid://dqoxsjstdwjvw" path="res://assets/textures/hammer_off.png" id="5_s761r"]
+[ext_resource type="Texture2D" uid="uid://d0cfi4i0ptboe" path="res://assets/textures/hammer_on.png" id="6_432ik"]
+[ext_resource type="Script" path="res://scripts/HammerButton.gd" id="7_ntqqq"]
+[ext_resource type="Texture2D" uid="uid://cs6o5tfspugdb" path="res://assets/textures/pickaxe_off.png" id="8_cxx2b"]
+[ext_resource type="Texture2D" uid="uid://dcjbxeio3bddf" path="res://assets/textures/pickaxe_on.png" id="9_8vpwm"]
+[ext_resource type="Script" path="res://scripts/PickaxeButton.gd" id="10_84266"]
+[ext_resource type="Texture2D" uid="uid://c340rdv7i7pr6" path="res://assets/textures/pickaxe_press_overlay1.png" id="11_fanjv"]
+[ext_resource type="Texture2D" uid="uid://brym3uxrprnh2" path="res://assets/textures/hammer_press_overlay1.png" id="12_jy2f3"]
+[ext_resource type="Texture2D" uid="uid://dgamfqquw3rqc" path="res://assets/textures/hammer_press_overlay2.png" id="13_o0wsi"]
+[ext_resource type="Texture2D" uid="uid://j6a1eefiaiw" path="res://assets/textures/hammer_press_overlay3.png" id="14_vdtrn"]
+[ext_resource type="Texture2D" uid="uid://d23s3r1myosd0" path="res://assets/textures/pickaxe_press_overlay2.png" id="15_r6taw"]
+[ext_resource type="Texture2D" uid="uid://cr2b6g8cobg2o" path="res://assets/textures/pickaxe_press_overlay3.png" id="16_7d6qy"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x0ykc"]
-texture = ExtResource("1_h3a7f")
+texture = ExtResource("1_hjg8r")
 separation = Vector2i(1, 1)
 0:0/0 = 0
 1:0/0 = 0
@@ -683,7 +685,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.05, 0.1, 0.15),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [ExtResource("12_r1ft5"), ExtResource("13_d2gft"), ExtResource("15_aflqj"), null]
+"values": [ExtResource("12_jy2f3"), ExtResource("13_o0wsi"), ExtResource("14_vdtrn"), null]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -724,7 +726,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.05, 0.1, 0.15),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [ExtResource("10_k38rd"), ExtResource("11_rujla"), ExtResource("12_k47w1"), null]
+"values": [ExtResource("11_fanjv"), ExtResource("15_r6taw"), ExtResource("16_7d6qy"), null]
 }
 
 [sub_resource type="Animation" id="Animation_hpue4"]
@@ -751,7 +753,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("10_k38rd")]
+"values": [ExtResource("11_fanjv")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -792,18 +794,22 @@ layer_0/name = "Base"
 layer_0/tile_data = PackedInt32Array(131072, 2031616, 4, 196608, 2031616, 4, 262144, 2031616, 4, 327680, 2031616, 4, 393216, 2031616, 4, 458752, 2031616, 4, 524288, 2031616, 4, 589824, 2031616, 4, 655360, 2031616, 4, 720896, 2031616, 4, 131073, 2031616, 4, 196609, 2031616, 4, 262145, 2031616, 4, 327681, 2031616, 4, 393217, 2031616, 4, 458753, 2031616, 4, 524289, 2031616, 4, 589825, 2031616, 4, 655361, 2031616, 4, 720897, 2031616, 4, 131074, 2031616, 4, 196610, 2031616, 4, 262146, 2031616, 4, 327682, 2031616, 4, 393218, 2031616, 4, 458754, 2031616, 4, 524290, 2031616, 4, 589826, 2031616, 4, 655362, 2031616, 4, 720898, 2031616, 4, 131075, 2031616, 4, 196611, 2031616, 4, 262147, 2031616, 4, 327683, 2031616, 4, 393219, 2031616, 4, 458755, 2031616, 4, 524291, 2031616, 4, 589827, 2031616, 4, 655363, 2031616, 4, 720899, 2031616, 4, 131076, 2031616, 4, 196612, 2031616, 4, 262148, 2031616, 4, 327684, 2031616, 4, 393220, 2031616, 4, 458756, 2031616, 4, 524292, 2031616, 4, 589828, 2031616, 4, 655364, 2031616, 4, 720900, 2031616, 4, 131077, 2031616, 4, 196613, 2031616, 4, 262149, 2031616, 4, 327685, 2031616, 4, 393221, 2031616, 4, 458757, 2031616, 4, 524293, 2031616, 4, 589829, 2031616, 4, 655365, 2031616, 4, 720901, 2031616, 4, 131078, 2031616, 4, 196614, 2031616, 4, 262150, 2031616, 4, 327686, 2031616, 4, 393222, 2031616, 4, 458758, 2031616, 4, 524294, 2031616, 4, 589830, 2031616, 4, 655366, 2031616, 4, 720902, 2031616, 4, 131079, 2031616, 4, 196615, 2031616, 4, 262151, 2031616, 4, 327687, 2031616, 4, 393223, 2031616, 4, 458759, 2031616, 4, 524295, 2031616, 4, 589831, 2031616, 4, 655367, 2031616, 4, 720903, 2031616, 4, 131080, 2031616, 4, 196616, 2031616, 4, 262152, 2031616, 4, 327688, 2031616, 4, 458760, 2031616, 4, 524296, 2031616, 4, 589832, 2031616, 4, 655368, 2031616, 4, 720904, 2031616, 4, 131081, 2031616, 4, 196617, 2031616, 4, 262153, 2031616, 4, 327689, 2031616, 4, 393225, 2031616, 4, 458761, 2031616, 4, 524297, 2031616, 4, 589833, 2031616, 4, 655369, 2031616, 4, 720905, 2031616, 4, 131082, 2031616, 4, 196618, 2031616, 4, 262154, 2031616, 4, 327690, 2031616, 4, 393226, 2031616, 4, 458762, 2031616, 4, 524298, 2031616, 4, 589834, 2031616, 4, 655370, 2031616, 4, 720906, 2031616, 4, 131083, 2031616, 4, 196619, 2031616, 4, 262155, 2031616, 4, 327691, 2031616, 4, 393227, 2031616, 4, 458763, 2031616, 4, 524299, 2031616, 4, 589835, 2031616, 4, 655371, 2031616, 4, 720907, 2031616, 4, 131084, 2031616, 4, 196620, 2031616, 4, 262156, 2031616, 4, 327692, 2031616, 4, 393228, 2031616, 4, 458764, 2031616, 4, 524300, 2031616, 4, 589836, 2031616, 4, 655372, 2031616, 4, 720908, 2031616, 4, 393224, 2031616, 4)
 layer_1/name = "Treasure"
 layer_1/tile_data = PackedInt32Array()
-layer_2/name = "Soft Rock"
+layer_2/name = "Rocks"
 layer_2/tile_data = PackedInt32Array()
-layer_3/name = "Medium Rock"
-layer_3/tile_data = PackedInt32Array()
-layer_4/name = "High Rock"
-layer_4/tile_data = PackedInt32Array()
-script = ExtResource("2_jvu2h")
+script = ExtResource("2_uc57u")
 
 [node name="UI Overlay" type="TextureRect" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
-texture = ExtResource("2_cvb06")
+texture = ExtResource("3_dhsli")
+
+[node name="Bag Button" type="TextureButton" parent="."]
+offset_left = 216.0
+offset_top = 11.0
+offset_right = 250.0
+offset_bottom = 45.0
+texture_normal = ExtResource("4_bwagy")
+texture_pressed = ExtResource("5_2ijpg")
 
 [node name="HammerButton" type="TextureButton" parent="."]
 offset_left = 217.0
@@ -812,10 +818,10 @@ offset_right = 251.0
 offset_bottom = 104.0
 toggle_mode = true
 button_pressed = true
-button_group = ExtResource("3_brq5q")
-texture_normal = ExtResource("3_i2qt8")
-texture_pressed = ExtResource("4_j5f8f")
-script = ExtResource("5_340ob")
+button_group = ExtResource("4_m26vl")
+texture_normal = ExtResource("5_s761r")
+texture_pressed = ExtResource("6_432ik")
+script = ExtResource("7_ntqqq")
 
 [node name="HammerButtonOverlay" type="TextureRect" parent="HammerButton"]
 visible = false
@@ -838,10 +844,10 @@ offset_top = 127.0
 offset_right = 251.0
 offset_bottom = 177.0
 toggle_mode = true
-button_group = ExtResource("3_brq5q")
-texture_normal = ExtResource("5_vkcd1")
-texture_pressed = ExtResource("6_5mwfm")
-script = ExtResource("8_kotpt")
+button_group = ExtResource("4_m26vl")
+texture_normal = ExtResource("8_cxx2b")
+texture_pressed = ExtResource("9_8vpwm")
+script = ExtResource("10_84266")
 
 [node name="PickaxeButtonOverlay" type="TextureRect" parent="PickaxeButton"]
 visible = false
@@ -851,12 +857,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("10_k38rd")
+texture = ExtResource("11_fanjv")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_bjn56")
 }
 
+[connection signal="pressed" from="Bag Button" to="." method="_on_bag_button_pressed"]
 [connection signal="pressed" from="HammerButton" to="HammerButton" method="_on_pressed"]
 [connection signal="pressed" from="PickaxeButton" to="PickaxeButton" method="_on_pressed"]
