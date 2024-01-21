@@ -13,11 +13,11 @@ Try to uncover all pieces of treasure before the walls collapse to break.
 Open your Bag to see how much of each item you have obtained
 
 
-##How it works
+## How it works
 Randomly spawns up to 5 pieces of treasure that are covered by layers of rocks generated using a perlin noise algorithm.
 Treasure and rocks are placed using Tilemaps.
 
-##To-do list
+## To-do list
 -Add sound effects
 -Add tile hit animations
 -Add wall damage animation
