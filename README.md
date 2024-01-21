@@ -3,13 +3,13 @@ A recreation of the Mining Minigame from Pokemon Diamond/Pearl/Platinum as a sta
 Made in Godot 4.2.1
 
 ## How to play
-![Interface](/grand-mine/docs/assets/Interface.png)
+![Interface](https://github.com/Peze01/grand-mine/blob/main/docs/assets/Interface.png)
 Click on a tile to destroy it. Switch between your hammer and pickaxe for bigger or more precise hits.
 
-![Game over screen](/grand-mine/docs/assets/Game_Over.png)
+![Game over screen](https://github.com/Peze01/grand-mine/blob/main/docs/assets/GameOver.png)
 Try to uncover all pieces of treasure before the walls collapse to break.
 
-![Bag](/grand-mine/docs/assets/Bag.png)
+![Bag](https://github.com/Peze01/grand-mine/blob/main/docs/assets/Bag.png)
 Open your Bag to see how much of each item you have obtained
 
 
